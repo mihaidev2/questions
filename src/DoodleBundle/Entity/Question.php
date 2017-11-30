@@ -33,6 +33,14 @@ class Question
      */
     protected $variants;
 
+    /**
+     * @return array
+     */
+    public function getVariantsList()
+    {
+        return explode("\n", $this->getVariants());
+    }
+
     public function setId($id)
     {
     	$this->id = $id;

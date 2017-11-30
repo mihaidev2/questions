@@ -26,6 +26,9 @@ class QuestionForm extends AbstractType
             'constraints' => [
                 new NotBlank(),
             ],
+            'attr' => [
+                'rows' => 7,
+            ],
         ]);
     }
 

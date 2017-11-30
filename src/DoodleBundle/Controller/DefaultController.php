@@ -63,4 +63,14 @@ class DefaultController extends Controller
             'form' => $form->createView(),
         ];
     }
+
+    public function viewAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $question = $em->getRepository('DoodleBundle:Question')->find($id);
+
+        return [
+            'question' => $question,
+        ];
+    }
 }
