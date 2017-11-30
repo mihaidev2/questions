@@ -1,0 +1,4 @@
+.idea/
+vendor
+var/bootstrap.php.cache
+var/logs/dev.log
