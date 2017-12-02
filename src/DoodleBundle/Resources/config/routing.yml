@@ -1,0 +1,15 @@
+doodle_homepage:
+    path: /
+    defaults: { _controller: DoodleBundle:Default:index }
+
+doodle_question_edit:
+    path: /edit/{id}
+    defaults: { _controller: DoodleBundle:Default:edit }
+
+doodle_question_add:
+    path: /add
+    defaults: { _controller: DoodleBundle:Default:edit, id: 0 }
+
+doodle_question_view:
+    path: /view/{id}
+    defaults: { _controller: DoodleBundle:Default:view }

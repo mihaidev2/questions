@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace DoodleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,6 +32,14 @@ class Question
      * @ORM\Column(type="string", length=255)
      */
     protected $variants;
+
+    /**
+     * @return array
+     */
+    public function getVariantsList()
+    {
+        return explode("\n", $this->getVariants());
+    }
 
     public function setId($id)
     {

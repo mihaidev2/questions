@@ -1,0 +1,40 @@
+{% extends '@Doodle/layout.html.twig' %}
+
+{% block body %}
+
+    {#{{ dump(question) }}#}
+
+    <table class="table table-bordered table-condensed">
+        <tr>
+            <th>{{ question.title }}</th>
+            {% for item in question.getVariantsList %}
+            <td>{{ item }}</td>
+            {% endfor %}
+        </tr>
+        <tbody id="variants-list">
+        </tbody>
+
+        <tfoot>
+        <tr>
+            <td><input type="text" name="username" placeholder="Your name here" /></td>
+            {% for item in question.getVariantsList %}
+            <td><input type="checkbox" name="variant[]" value="{{ item }}" /></td>
+            {% endfor %}
+        </tr>
+        </tfoot>
+    </table>
+    <div class="pull-right">
+        <a href="" class="btn btn-success">Save</a>
+    </div>
+    <div class="clearfix"></div>
+
+{% endblock body %}
+
+
+{% block javascripts %}
+    {# keep block content from parent layout #}
+    {{ parent() }}
+    <script>
+        // add here my js
+    </script>
+{% endblock %}
