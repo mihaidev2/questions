@@ -12,19 +12,29 @@
             {% endfor %}
         </tr>
         <tbody id="variants-list">
+        {% for ans in question.answers %}
+            <tr>
+                <td>{{ ans.name }}</td>
+                {% for item in question.getVariantsList %}
+                <td><input {% if item|trim in ans.answer %} checked="checked"{% endif %} type="checkbox" /></td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
         </tbody>
 
         <tfoot>
-        <tr>
-            <td><input type="text" name="username" placeholder="Your name here" /></td>
-            {% for item in question.getVariantsList %}
-            <td><input type="checkbox" name="variant[]" value="{{ item }}" /></td>
-            {% endfor %}
-        </tr>
+        <form action="" id="answer-form">
+            <tr>
+                <td><input type="text" class="clearme" name="username" id="username" placeholder="Your name here" /></td>
+                {% for item in question.getVariantsList %}
+                <td><input type="checkbox" name="variant[]" value="{{ item }}" class="answer clearme" /></td>
+                {% endfor %}
+            </tr>
+        </form>
         </tfoot>
     </table>
     <div class="pull-right">
-        <a href="" class="btn btn-success">Save</a>
+        <a href="#" data-id="{{ question.id }}" data-url="{{ path('doodle_answer_add') }}" class="btn btn-success">Save</a>
     </div>
     <div class="clearfix"></div>
 
@@ -34,7 +44,82 @@
 {% block javascripts %}
     {# keep block content from parent layout #}
     {{ parent() }}
+
     <script>
+
+        let totalVariants = {{ question.getVariantsList | length }};
+        let variantsList = {{ question.getVariantsList | json_encode | raw }};
+
+        /**
+         * https://github.com/kisphp/js-format-string
+         *
+         * @returns {string}
+         */
+        String.prototype.formatString = function () {
+          // get function arguments
+          let args;
+          args = arguments;
+          if (typeof arguments[0] === 'object') {
+            args = arguments[0];
+          }
+
+          // replace variables in string
+          return this.replace(/{([a-z_\d+]+)}/g, function (match, index) {
+            // return replaced variable
+            let output = args[index];
+            if (typeof output === 'undefined') {
+              output = '';
+            }
+
+            return output;
+          });
+        };
+
+        function clearForm() {
+          $('.clearme').each(function(){
+            $(this).val('').prop('checked', false);
+          });
+        }
+
+        function appendRow(rowData){
+          let rows = '<tr><td>'+rowData.username+'</td>';
+          for (var I = 0; I < totalVariants; I++) {
+              rows += '<td><input type="checkbox"';
+              if (variantsList.indexOf(variantsList[I])) {
+                rows += ' checked="checked"';
+              }
+              rows += ' /></td>';
+          }
+          rows += '</tr>';
+
+          $('#variants-list').append(rows);
+          clearForm();
+        }
+
         // add here my js
+        $(document).ready(function(){
+          $('.btn-success').click(function(e) {
+            e.preventDefault();
+
+            let objectId = $(this).data('id');
+            let formData = $('#answer-form').serialize();
+
+            $.ajax({
+              url: $(this).data('url'),
+              type: 'post',
+              dataType: 'json',
+              data: {
+                idQuestion: objectId,
+                formData: formData
+              }
+            }).success(function(response) {
+              if (response.code == 200) {
+                appendRow(response);
+              } else {
+                alert(response.message);
+              }
+            });
+          });
+        });
     </script>
 {% endblock %}

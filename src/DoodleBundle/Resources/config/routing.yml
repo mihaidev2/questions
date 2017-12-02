@@ -5,3 +5,8 @@ doodle_homepage:
 doodle_questions:
     resource: "@DoodleBundle/Resources/config/routes/questions.yml"
     prefix: /question
+
+doodle_answers:
+  resource: "@DoodleBundle/Resources/config/routes/answers.yml"
+  prefix: /answer
+
