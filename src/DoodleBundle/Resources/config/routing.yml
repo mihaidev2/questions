@@ -1,0 +1,7 @@
+doodle_homepage:
+  path: /
+  defaults: { _controller: DoodleBundle:Default:index }
+
+doodle_questions:
+    resource: "@DoodleBundle/Resources/config/routes/questions.yml"
+    prefix: /question

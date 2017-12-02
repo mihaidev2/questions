@@ -1,16 +1,22 @@
 <?php
 
-namespace AppBundle\Entity;
+namespace DoodleBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Kisphp\Entity\KisphpEntityInterface;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="questions", options={"colate": "utf8_general_ci", "charset": "utf8"})
+ * @ORM\Entity(repositoryClass="DoodleBundle\Repository\QuestionRepository")
  */
-class Question
+class Question implements KisphpEntityInterface
 {
-	/**
+    const STATUS_DELETED = 0;
+    const STATUS_INACTIVE = 1;
+    const STATUS_ACTIVE = 2;
+
+    /**
      * @var int
      *
      * @ORM\Column(type="integer", options={"unsigned": true})
@@ -18,6 +24,13 @@ class Question
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(type="integer", options={"unsigned": true, "default": DoodleBundle\Entity\Question::STATUS_ACTIVE})
+     */
+    protected $status = self::STATUS_ACTIVE;
 
     /**
      * @var string
@@ -32,6 +45,11 @@ class Question
      * @ORM\Column(type="string", length=255)
      */
     protected $variants;
+
+    public function getVariantsList()
+    {
+        return explode("\n", $this->getVariants());
+    }
 
     public function setId($id)
     {
@@ -61,5 +79,21 @@ class Question
     public function getVariants()
     {
     	return $this->variants;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatus(): int
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param int $status
+     */
+    public function setStatus(int $status)
+    {
+        $this->status = $status;
     }
 }

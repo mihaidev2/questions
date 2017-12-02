@@ -1,5 +1,7 @@
 <?php
 
+//phpinfo();die;
+
 use Symfony\Component\Debug\Debug;
 use Symfony\Component\HttpFoundation\Request;
 

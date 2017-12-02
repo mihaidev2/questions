@@ -1,9 +1,10 @@
 <?php
 
-namespace AppBundle;
+namespace DoodleBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class AppBundle extends Bundle
+class DoodleBundle extends Bundle
 {
+
 }
