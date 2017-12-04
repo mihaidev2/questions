@@ -1,0 +1,34 @@
+{% extends '@Doodle/layout.html.twig' %}
+
+{#{% block title %}Questions list{% endblock %}#}
+{% block title 'Questions list' %}
+
+{% block body %}
+
+    <table class="table table-striped">
+        <caption class="text-right"><a class="btn btn-sm btn-success" href="{{ path('doodle_question_add') }}">Add new question</a></caption>
+        <thead>
+        <tr>
+            <th>Options</th>
+            <th>#</th>
+            <th>Title</th>
+            <th>Variants</th>
+        </tr>
+        </thead>
+        <tbody>
+        {#{{ dump(questions) }}#}
+        {% for q in questions %}
+            <tr id="row-{{ q.id }}">
+                <td>
+                    <a href="{{ path('doodle_question_view', {id: q.id}) }}" class="btn btn-success btn-sm">View</a>
+                    <a href="{{ path('doodle_question_edit', {id: q.id}) }}" class="btn btn-primary btn-sm">Edit</a>
+                    <a href="#" data-id="{{ q.id }}" data-url="{{ path('doodle_question_delete') }}" class="delete-object btn btn-danger btn-sm">Delete</a>
+                </td>
+                <td>{{ q.id }}</td>
+                <td><a href="{{ path('doodle_question_edit', {id: q.id}) }}">{{ q.title }}</a></td>
+                <td>{{ q.variants }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
