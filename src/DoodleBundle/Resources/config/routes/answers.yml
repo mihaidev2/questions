@@ -1,0 +1,3 @@
+doodle_answer_add:
+  path: /save
+  defaults: { _controller: DoodleBundle:Answer:save }
