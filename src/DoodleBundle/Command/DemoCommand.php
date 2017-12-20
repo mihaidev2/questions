@@ -7,6 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use DoodleBundle\Entity\Question;
 use DoodleBundle\Entity\Answer;
+use Faker\Factory as Faker;
 
 class DemoCommand extends ContainerAwareCommand
 {
@@ -22,16 +23,47 @@ class DemoCommand extends ContainerAwareCommand
 
         $em = $this->getContainer()->get('doctrine')->getManager();
 
-        $question = new Question();
-        $question->setTitle("Where do we go next weekend?");
-        $question->setVariants("Sinaia\nBusteni\nAzuga\nPredeal\nPoiana Rasnov");
+        $faker = Faker::create();
 
-        $answer_1 = new Answer();
-        $answer_1->setAnswer(['Sinaia']);
-        $answer_1->setName('Bogdan');
-        $answer_1->setQuestion($question);
+        $variants = "";
 
-        $em->persist($answer_1);
+        for ($i=1; $i<=5; $i++) {
+
+            $arr_variants = [];
+
+            $arr_answers = [];
+
+            $randNr = mt_rand(3,6);
+
+            for ($j=1; $j<=$randNr; $j++) {
+                $arr_variants[] = $faker->realText($faker->numberBetween(10,20));
+            }
+
+            $question = new Question();
+            $question->setTitle($faker->title);
+            $question->setVariants( implode("\n", $arr_variants) );
+
+            $variants_keys = array_rand($arr_variants, mt_rand(1, $randNr));
+            if (is_int($variants_keys)) {
+                $arr_answers[] = [ $arr_variants[$variants_keys] ];
+            } elseif (is_array($variants_keys)) {
+                foreach ($variants_keys as $key) {
+                    array_push($arr_answers, $arr_variants[$key]);
+                }
+            }
+            
+
+            for ($k=1; $k<=5; $k++) {
+                $answer_{$k} = new Answer();
+                $answer_{$k}->setAnswer($arr_answers);
+                $answer_{$k}->setName($faker->firstName);
+                $answer_{$k}->setQuestion($question);
+
+                $em->persist($answer_{$k});
+            }
+            
+        }
+
         $em->persist($question);
         $em->flush();
 
