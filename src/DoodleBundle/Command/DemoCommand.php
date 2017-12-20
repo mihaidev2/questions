@@ -25,43 +25,41 @@ class DemoCommand extends ContainerAwareCommand
 
         $faker = Faker::create();
 
-        $variants = "";
+        $variants = '';
 
         for ($i=1; $i<=5; $i++) {
+            $variants = [];
 
-            $arr_variants = [];
-
-            $arr_answers = [];
-
-            $randNr = mt_rand(3,6);
+            $randNr = mt_rand(3, 6);
 
             for ($j=1; $j<=$randNr; $j++) {
-                $arr_variants[] = $faker->realText($faker->numberBetween(10,20));
+                $variants[] = 'variant '.$j;
             }
 
             $question = new Question();
             $question->setTitle($faker->title);
-            $question->setVariants( implode("\n", $arr_variants) );
+            $question->setVariants( implode("\n", $variants) );
 
-            $variants_keys = array_rand($arr_variants, mt_rand(1, $randNr));
-            if (is_int($variants_keys)) {
-                $arr_answers[] = [ $arr_variants[$variants_keys] ];
-            } elseif (is_array($variants_keys)) {
-                foreach ($variants_keys as $key) {
-                    array_push($arr_answers, $arr_variants[$key]);
-                }
-            }
+            $max = mt_rand(1, $randNr);
+            $variant_keys = array_rand($variants, $max);
             
+            $answers = [];
+            if (is_array($variant_keys)) {
+                foreach ($variant_keys as $key) {
+                    $answers[] = $variants[$key];
+                }
+            } else {
+                $answers[] = $variants[$variant_keys];
+            }
 
             for ($k=1; $k<=5; $k++) {
-                $answer_{$k} = new Answer();
-                $answer_{$k}->setAnswer($arr_answers);
-                $answer_{$k}->setName($faker->firstName);
-                $answer_{$k}->setQuestion($question);
+                $answer = new Answer();
+                $answer->setAnswer($answers);
+                $answer->setName($faker->firstName);
+                $answer->setQuestion($question);
 
-                $em->persist($answer_{$k});
-            }
-            
+                $em->persist($answer);
+            }  
         }
 
         $em->persist($question);
