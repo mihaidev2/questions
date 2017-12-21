@@ -46,6 +46,16 @@ class Question implements KisphpEntityInterface
      */
     protected $variants;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Answer", mappedBy="question")
+     */
+    protected $answers;
+
+    public function getAnswers() 
+    {
+        return $this->answers;
+    }
+
     public function getVariantsList()
     {
         return explode("\n", $this->getVariants());

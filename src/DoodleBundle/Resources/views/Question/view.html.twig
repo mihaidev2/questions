@@ -12,7 +12,7 @@
             {% endfor %}
         </tr>
         <tbody id="variants-list">
-        {% for ans in question.variants %}
+        {% for ans in question.answers %}
             <tr>
                 <td>{{ ans.name }}</td>
                 {% for item in question.getVariantsList %}
