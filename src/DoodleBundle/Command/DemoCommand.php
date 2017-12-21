@@ -49,10 +49,11 @@ class DemoCommand extends ContainerAwareCommand
                 $answer->setQuestion($question);
 
                 $em->persist($answer);
-            }  
+            }
+
+            $em->persist($question);  
         }
 
-        $em->persist($question);
         $em->flush();
 
 
