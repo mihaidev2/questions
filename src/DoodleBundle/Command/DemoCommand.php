@@ -55,8 +55,6 @@ class DemoCommand extends ContainerAwareCommand
         }
 
         $em->flush();
-
-
     }
 
     /**
