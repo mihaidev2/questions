@@ -7,3 +7,8 @@ services:
         class: DoodleBundle\Persistence\QuestionFacade
         arguments:
             - "@doctrine.orm.entity_manager"
+
+    demo.data:
+        class: DoodleBundle\Services\DemoData
+        arguments:
+            - "@doctrine.orm.entity_manager"
